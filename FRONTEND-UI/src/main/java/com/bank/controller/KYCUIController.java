@@ -13,6 +13,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.bank.model.Customer;
+import com.bank.model.KYCDocument;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -27,12 +30,16 @@ public class KYCUIController {
     @Autowired
     private RestTemplate restTemplate;
 
-    /**
-     * Displays the KYC document upload form.
-     * @return The name of the JSP view for the upload form.
-     */
-    @GetMapping("/form/{customerId}")
-    public String showUploadForm() {
+    
+//    @GetMapping("/form/{customerId}")
+//    public String showUploadForm() {
+//        return "kyc-upload";
+//    }
+    
+    @GetMapping("/form")
+    public String showUploadForm(@RequestParam(value = "customerId", required = false) String customerId, Model model) {
+        // Now, customerId will be non-null if coming directly from registration
+        model.addAttribute("customerId", customerId); // put it into model for the form
         return "kyc-upload";
     }
     
@@ -40,41 +47,24 @@ public class KYCUIController {
     public String showUploadSuccess() {
 		return "KYCSuccessfull";
 	}
-    /**
-     * Handles the submission of KYC documents from the frontend.
-     * It sends the data to the backend KYC service via the API Gateway.
-     *
-     * @param fullName The full name of the customer.
-     * @param email The email address of the customer.
-     * @param phoneNumber The phone number of the customer.
-     * @param aadharFront The MultipartFile for the Aadhar card front side.
-     * @param aadharBack The MultipartFile for the Aadhar card back side.
-     * @param panFront The MultipartFile for the PAN card front side.
-     * @param panBack The MultipartFile for the PAN card back side.
-     * @param photograph The MultipartFile for the customer's photograph.
-     * @param redirectAttributes Used to add flash attributes for success/error messages after redirect.
-     * @return A redirect string to the KYC upload form, with messages.
-     */
+    
     @PostMapping("/upload")
-    public String uploadKYCDocuments(
-            @RequestParam("fullName") String fullName,
-            @RequestParam("email") String email,
-            @RequestParam("phoneNumber") String phoneNumber,
-            @RequestParam(value = "aadharFront", required = false) MultipartFile aadharFront,
-            @RequestParam(value = "aadharBack", required = false) MultipartFile aadharBack,
-            @RequestParam(value = "panFront", required = false) MultipartFile panFront,
-            @RequestParam(value = "panBack", required = false) MultipartFile panBack,
-            @RequestParam(value = "photograph", required = false) MultipartFile photograph,
-            RedirectAttributes redirectAttributes) {
+    public String uploadKYCDocuments(@RequestParam("customerId") String customerId,
+			@RequestParam("aadharNumber") String aadharNumber, @RequestParam("panNumber") String panNumber,
+			@RequestParam("aadharFront") MultipartFile aadharFront,
+			@RequestParam("aadharBack") MultipartFile aadharBack, @RequestParam("panFront") MultipartFile panFront,
+			@RequestParam("panBack") MultipartFile panBack, @RequestParam("photograph") MultipartFile photograph,
+			Model model, RedirectAttributes redirectAttributes) {
 
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
             MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-            body.add("fullName", fullName.trim());
-            body.add("email", email.trim());
-            body.add("phoneNumber", phoneNumber.trim());
+            body.add("customerId", customerId.trim());
+            body.add("aadharNumber", aadharNumber.trim());
+            body.add("panNumber", panNumber.trim());
+            
 
             // Helper function to add MultipartFile to MultiValueMap
             addFileToBody(body, "aadharFront", aadharFront);
@@ -92,14 +82,13 @@ public class KYCUIController {
                     Map.class
             );
 
-            if (response.getStatusCode() == HttpStatus.OK) {
+            if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
                 Map<String, Object> responseBody = response.getBody();
-                redirectAttributes.addFlashAttribute("success",
+                model.addAttribute("success",
                         "KYC documents uploaded successfully! Reference ID: " + responseBody.get("id"));
+                model.addAttribute("customerId", responseBody.get("customerId"));
             } else {
-                // This block might not be reached for 4xx/5xx errors as RestTemplate throws exceptions
-                redirectAttributes.addFlashAttribute("error",
-                        "Upload failed with status: " + response.getStatusCode());
+                model.addAttribute("error", "Upload failed with status: " + response.getStatusCode());
             }
 
         } catch (HttpClientErrorException e) {
@@ -128,13 +117,7 @@ public class KYCUIController {
         return "KYCSuccessfull"; // Redirect back to the upload form
     }
 
-    /**
-     * Helper method to add a MultipartFile to the MultiValueMap if it's not empty.
-     * @param body The MultiValueMap to add the file to.
-     * @param paramName The name of the parameter for the file (e.g., "aadharFront").
-     * @param file The MultipartFile to add.
-     * @throws IOException If there's an issue reading the file bytes.
-     */
+    
     private void addFileToBody(MultiValueMap<String, Object> body, String paramName, MultipartFile file) throws IOException {
         if (file != null && !file.isEmpty()) {
             body.add(paramName, new ByteArrayResource(file.getBytes()) {
@@ -146,12 +129,74 @@ public class KYCUIController {
         }
     }
 
-    /**
-     * Displays the admin panel to view all KYC documents.
-     * Fetches documents from the backend service via API Gateway.
-     * @param model Model to pass data to the view.
-     * @return The name of the JSP view for the admin panel.
-     */
+    
+
+    
+    @GetMapping("/view-application")
+    public String viewApplication(@RequestParam("documentId") Long id, Model model) {
+        try {
+            // Call KYC microservice to get the KYC document
+            ResponseEntity<KYCDocument> docResponse = restTemplate.getForEntity(
+                    API_GATEWAY_URL + "/kyc/api/documents/" + id,
+                    KYCDocument.class);
+
+            if (docResponse.getStatusCode() == HttpStatus.OK && docResponse.getBody() != null) {
+                KYCDocument document = docResponse.getBody();
+                model.addAttribute("document", document);
+
+                // Fetch customer details via customerProxy or directly via REST call
+                String customerId = document.getCustomerId();
+
+                try {
+                    ResponseEntity<Customer> customerResponse = restTemplate.getForEntity(
+                            API_GATEWAY_URL + "/customers/" + customerId,
+                            Customer.class);
+
+                    if (customerResponse.getStatusCode() == HttpStatus.OK && customerResponse.getBody() != null) {
+                        model.addAttribute("customer", customerResponse.getBody());
+                    } else {
+                        model.addAttribute("customer", null);
+                    }
+                } catch (Exception e) {
+                    // Log or handle failure gracefully
+                    model.addAttribute("customer", null);
+                }
+
+                return "customerwithkyc"; // The view name to render
+            } else {
+                // Document not found, redirect to upload page or error page
+                return "redirect:/kyc/form?error=Document not found";
+            }
+        } catch (Exception e) {
+            // Handle REST call failures or other exceptions
+            model.addAttribute("error", "Failed to fetch KYC document: " + e.getMessage());
+            return "error"; // Or any error view you have
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   
     @GetMapping("/admin")
     public String showAdmin(Model model) {
         try {
@@ -166,12 +211,7 @@ public class KYCUIController {
         return "admin-panel-simple";
     }
 
-    /**
-     * Views a specific KYC document details.
-     * @param id The ID of the document to view.
-     * @param model Model to pass data to the view.
-     * @return The name of the JSP view for document details.
-     */
+    
     @GetMapping("/admin/view/{id}")
     public String viewDocument(@PathVariable Long id, Model model) {
         try {
@@ -187,12 +227,7 @@ public class KYCUIController {
         }
     }
 
-    /**
-     * Deletes a KYC document.
-     * @param id The ID of the document to delete.
-     * @param redirectAttributes Used to add flash attributes for success/error messages.
-     * @return A redirect string to the admin panel.
-     */
+    
     @PostMapping("/admin/delete/{id}")
     public String deleteDocument(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
@@ -207,13 +242,7 @@ public class KYCUIController {
         return "redirect:/kyc/admin";
     }
 
-    /**
-     * Updates the status of a KYC document.
-     * @param id The ID of the document to update.
-     * @param status The new status.
-     * @param redirectAttributes Used to add flash attributes for success/error messages.
-     * @return A redirect string to the admin panel.
-     */
+    
     @PostMapping("/admin/update-status/{id}")
     public String updateStatus(@PathVariable Long id,
                                @RequestParam("status") String status,
@@ -236,19 +265,6 @@ public class KYCUIController {
         return "redirect:/kyc/admin";
     }
 
-    /**
-     * Health check endpoint for the UI service and to check KYC microservice status.
-     * @return A string indicating the health status.
-     */
-    @GetMapping("/health")
-    @ResponseBody
-    public String healthCheck() {
-        try {
-            // Calls the health endpoint of the API Gateway, which should then route to KYC service's health
-            String response = restTemplate.getForObject(API_GATEWAY_URL + "/kyc/api/health", String.class);
-            return "Frontend UP - KYC Service: " + response;
-        } catch (Exception e) {
-            return "Frontend UP - KYC Service DOWN: " + e.getMessage();
-        }
-    }
+    
+    
 }

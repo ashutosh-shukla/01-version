@@ -1,8 +1,0 @@
-package com.bank.proxy;
-
-import org.springframework.cloud.openfeign.FeignClient;
-
-@FeignClient(name = "KYC-SERVICE", url = "http://localhost:8083/kyc/api")
-public class KYCProxy {
-
-}

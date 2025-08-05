@@ -1,6 +1,7 @@
 package com.bank.controller;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bank.model.Account;
 import com.bank.services.AccountService;
+import com.bank.utils.AccountUtil;
 
 @RestController
 @RequestMapping("/account-api/accounts")
@@ -23,21 +25,12 @@ public class AccountController {
 	@Autowired
 	private AccountService accountService;
 	
+//	@Autowired
+//	private Account account;
+	
 	@Autowired
 	private Environment environment;
 	
-	@GetMapping("/hellobro")
-	public String hellobro() {
-		return "Hello from Account Service!";
-		
-	}
-	
-
-    @GetMapping("/health")
-    public String healthCheck() {
-        return "Account Service is UP";
-    }
-   
 
     @GetMapping("/by-customer/{customerId}")
     public Account getByCustomerId(@PathVariable String customerId) {
@@ -75,6 +68,21 @@ public class AccountController {
         return "Account updated successfully.";
     }
 	
+    @PostMapping("/create-acc/{customerId}")
+    public Account createAccount(@PathVariable String customerId) {
+    	Account account=new Account();
+    	account.setCustomerId(customerId);
+        account.setAccountNumber(AccountUtil.generateAccountNumber());
+        account.setAccountType("SAVINGS");
+        account.setBalance(BigDecimal.ZERO);
+        account.setCurrency("INR");
+        account.setStatus("ACTIVE");
+        account.setOpenedDate(LocalDateTime.now());
+        account.setCreatedAt(LocalDateTime.now());
+        account.setUpdatedAt(LocalDateTime.now());
+    	accountService.createAccount(account);
+    	return account;
+    }
 }
 
 

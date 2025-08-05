@@ -32,10 +32,7 @@ public class CustomerController {
     @Autowired
     private AccountServiceProxy accountServiceProxy;
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "Hello from Customer Service!";
-    }
+   
 
     @PostMapping("/register")
     public ResponseEntity<Customer> registerCustomer(@RequestBody Customer customer) {
@@ -44,7 +41,8 @@ public class CustomerController {
             return ResponseEntity.ok(savedCustomer);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }}
+        }
+    }
 
     @GetMapping("/{customerId}")
     public Customer getCustomer(@PathVariable String customerId) {

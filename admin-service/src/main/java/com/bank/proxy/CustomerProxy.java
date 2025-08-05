@@ -1,22 +1,27 @@
 package com.bank.proxy;
 
-import java.util.List;
-
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.bank.model.Customer;
 
-@FeignClient(name = "CUSTOMER-SERVICE", url = "http://localhost:8081/customer-api",path = "/customer-api")
+@FeignClient(name="customer-service" , path="/customers")
 public interface CustomerProxy {
-
-	@GetMapping("/all")
-    List<Customer> getAllCustomers();
-
-    @GetMapping("/{id}")
-    Customer getCustomerById(@PathVariable("id") String id);
 	
+	// http://CUSTOMER-SERVICE/customers/{customerId}
+	 @GetMapping("/{customerId}")
+	 public Customer getCustomer(@PathVariable String customerId);
+	 
+	 @PutMapping("/{customerId}")
+	    public Customer updateCustomer(@PathVariable String customerId, @RequestBody Customer customer);
+	        
+	    
+
 }
+
+
+

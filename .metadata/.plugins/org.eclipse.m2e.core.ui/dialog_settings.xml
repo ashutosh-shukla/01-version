@@ -42,15 +42,12 @@
 	<section name="Maven2ProjectWizardArchifactPage">
 		<list key="package">
 			<item value="com.bank"/>
-			<item value="com.oracle"/>
 		</list>
 		<list key="groupId">
 			<item value="com.bank"/>
-			<item value="com.oracle"/>
 		</list>
 		<list key="artifactId">
-			<item value="FRONTEND-UI"/>
-			<item value="customer-service"/>
+			<item value="email-service"/>
 		</list>
 		<list key="projectNameTemplate">
 			<item value="[artifactId]"/>

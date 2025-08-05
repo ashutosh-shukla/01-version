@@ -1,4 +1,0 @@
-server.port=7071
-spring.mvc.view.prefix=/WEB-INF/jsp/
-spring.mvc.view.suffix=.jsp
-spring.thymeleaf.enabled=false

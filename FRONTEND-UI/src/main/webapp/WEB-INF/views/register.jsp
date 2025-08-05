@@ -34,7 +34,7 @@
             </c:if>
             
             <form:form modelAttribute="customer"
-                       action="${pageContext.request.contextPath}/customer/registerCustomer"
+                       action="${pageContext.request.contextPath}/customer/register"
                        method="post" onsubmit="return validateForm()">
                 
                 <div class="mb-3">

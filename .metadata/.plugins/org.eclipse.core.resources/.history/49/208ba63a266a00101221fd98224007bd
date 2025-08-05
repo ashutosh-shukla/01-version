@@ -1,5 +1,0 @@
-server.port=7070
-spring.application.name=FRONTEND-UI
-
-spring.mvc.view.prefix=/WEB-INF/views/
-spring.mvc.view.suffix=.jsp

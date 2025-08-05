@@ -139,7 +139,7 @@
                                     <div class="alert alert-warning">
                                         <h6><i class="fas fa-file-upload"></i> KYC Verification Required</h6>
                                         <p>Complete your KYC verification to create your bank account and access banking services.</p>
-                                        <a href="${pageContext.request.contextPath}/kyc/form/${customer.customerId}" 
+                                        <a href="${pageContext.request.contextPath}/kyc/form?customerId=${customer.customerId}" 
                                            class="btn btn-warning btn-lg">
                                             <i class="fas fa-upload"></i> Complete KYC Verification
                                         </a>

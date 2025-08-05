@@ -90,5 +90,10 @@ public class AccountServiceImpl implements AccountService {
         throw new UnsupportedOperationException("Unimplemented method 'getAccountByAccountNumber'");
     }
 
+	@Override
+	public Account createAccount(Account account) {
+		return accountDao.save(account);
+	}
+
 
 }

@@ -89,30 +89,32 @@
 
                     <%-- Corrected form action to point to the KYCUIController's upload method --%>
                     <form action="${pageContext.request.contextPath}/kyc/upload" method="post" enctype="multipart/form-data" id="kycForm">
+                        <input type="hidden" name="customerId" value="${customerId}">
+                        <!-- Personal Information -->
                         <div class="row mb-4">
                             <div class="col-12">
                                 <h5 class="text-primary"><i class="fas fa-user me-2"></i>Personal Information</h5>
                                 <hr>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label for="fullName" class="form-label">AdharCard Number<span class="required-field">*</span></label>
-                                <input type="text" class="form-control" id="fullName" name="fullName" required>
-                                <div class="invalid-feedback">Please enter a Adhar-Card details.</div>
+                                <label for="aadharNumber" class="form-label">Aadhar Number <span class="required-field">*</span></label>
+                                <input type="text" class="form-control" id="aadharNumber" name="aadharNumber" required>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label for="email" class="form-label">PAN Card Number <span class="required-field">*</span></label>
-                                <input type="text" class="form-control" id="email" name="email" required>
-                                <div class="invalid-feedback">Please enter a PAN Card details.</div>
+                                <label for="panNumber" class="form-label">Pan Number <span class="required-field">*</span></label>
+                                <input type="text" class="form-control" id="panNumber" name="panNumber" required>
                             </div>
                            
                         </div>
 
+                        <!-- Document Uploads -->
                         <div class="row">
                             <div class="col-12">
                                 <h5 class="text-primary"><i class="fas fa-file-upload me-2"></i>Document Upload</h5>
                                 <hr>
                             </div>
 
+                            <!-- Aadhar Front -->
                             <div class="col-md-6 mb-4">
                                 <label class="form-label">Aadhar Card - Front Side <span class="required-field">*</span></label>
                                 <div class="file-upload-wrapper">
@@ -120,13 +122,13 @@
                                     <label for="aadharFront" class="file-upload-label">
                                         <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
                                         <div>Click to upload Aadhar Front</div>
-                                        <small class="text-muted">JPG, PNG, GIF up to 10MB</small>
+                                        <small class="text-muted">JPG, PNG, JPEG up to 10MB</small>
                                     </label>
                                     <div class="preview-container" id="aadharFrontPreview"></div>
                                 </div>
-                                <div class="invalid-feedback file-feedback">Please upload Aadhar Card - Front Side.</div>
                             </div>
 
+                           <!-- Aadhar Back -->
                             <div class="col-md-6 mb-4">
                                 <label class="form-label">Aadhar Card - Back Side <span class="required-field">*</span></label>
                                 <div class="file-upload-wrapper">
@@ -134,13 +136,13 @@
                                     <label for="aadharBack" class="file-upload-label">
                                         <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
                                         <div>Click to upload Aadhar Back</div>
-                                        <small class="text-muted">JPG, PNG, GIF up to 10MB</small>
+                                        <small class="text-muted">JPG, PNG, JPEG up to 10MB</small>
                                     </label>
                                     <div class="preview-container" id="aadharBackPreview"></div>
                                 </div>
-                                <div class="invalid-feedback file-feedback">Please upload Aadhar Card - Back Side.</div>
                             </div>
 
+                            <!-- PAN Front -->
                             <div class="col-md-6 mb-4">
                                 <label class="form-label">PAN Card - Front Side</label>
                                 <div class="file-upload-wrapper">
@@ -148,12 +150,13 @@
                                     <label for="panFront" class="file-upload-label">
                                         <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
                                         <div>Click to upload PAN Front</div>
-                                        <small class="text-muted">JPG, PNG, GIF up to 10MB</small>
+                                        <small class="text-muted">JPG, PNG, JPEG up to 10MB</small>
                                     </label>
                                     <div class="preview-container" id="panFrontPreview"></div>
                                 </div>
                             </div>
 
+                            <!-- PAN Back -->
                             <div class="col-md-6 mb-4">
                                 <label class="form-label">PAN Card - Back Side</label>
                                 <div class="file-upload-wrapper">
@@ -161,12 +164,13 @@
                                     <label for="panBack" class="file-upload-label">
                                         <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
                                         <div>Click to upload PAN Back</div>
-                                        <small class="text-muted">JPG, PNG, GIF up to 10MB</small>
+                                        <small class="text-muted">JPG, PNG, JPEG up to 10MB</small>
                                     </label>
                                     <div class="preview-container" id="panBackPreview"></div>
                                 </div>
                             </div>
 
+                            <!-- Photograph -->
                             <div class="col-md-12 mb-4">
                                 <label class="form-label">Photograph <span class="required-field">*</span></label>
                                 <div class="file-upload-wrapper">
@@ -174,11 +178,10 @@
                                     <label for="photograph" class="file-upload-label">
                                         <i class="fas fa-camera fa-2x mb-2"></i>
                                         <div>Click to upload your Photograph</div>
-                                        <small class="text-muted">JPG, PNG, GIF up to 10MB</small>
+                                        <small class="text-muted">JPG, PNG, JPEG up to 10MB</small>
                                     </label>
                                     <div class="preview-container" id="photographPreview"></div>
                                 </div>
-                                <div class="invalid-feedback file-feedback">Please upload your Photograph.</div>
                             </div>
                         </div>
 
@@ -205,13 +208,12 @@
             const input = document.getElementById(inputId);
             const label = input.nextElementSibling;
             const preview = document.getElementById(previewId);
-            const feedback = label.nextElementSibling; // Get the invalid-feedback div
-
+            
             input.addEventListener('change', function(e) {
                 const file = e.target.files[0];
                 if (file) {
                     label.classList.add('has-file');
-
+                    
                     // Simple file size display without complex calculations
                     let sizeText = 'File selected';
                     if (file.size) {
@@ -222,29 +224,20 @@
                             sizeText = kb + ' KB';
                         }
                     }
-
+                    
                     label.innerHTML = '<i class="fas fa-check-circle fa-2x mb-2 text-success"></i>' +
                                     '<div>' + file.name + '</div>' +
                                     '<small class="text-muted">' + sizeText + '</small>';
-
+                    
                     // Show preview
                     const reader = new FileReader();
                     reader.onload = function(e) {
                         preview.innerHTML = '<img src="' + e.target.result + '" class="preview-image" alt="Preview">';
                     };
                     reader.readAsDataURL(file);
-
-                    // Remove invalid feedback on successful file selection
-                    if (feedback) {
-                        feedback.style.display = 'none';
-                    }
                 } else {
                     label.classList.remove('has-file');
                     preview.innerHTML = '';
-                    // Show invalid feedback if file is removed
-                    if (input.hasAttribute('required') && feedback) {
-                        feedback.style.display = 'block';
-                    }
                 }
             });
         }
@@ -258,51 +251,22 @@
 
         // Form validation
         document.getElementById('kycForm').addEventListener('submit', function(e) {
-            const form = e.target;
+            const requiredFields = ['aadharNumber', 'panNumber', 'aadharFront', 'aadharBack','panFront','panBack', 'photograph'];
             let isValid = true;
-
-            // Validate text inputs
-            const textInputs = ['fullName', 'email', 'phoneNumber'];
-            textInputs.forEach(function(fieldId) {
+            
+            requiredFields.forEach(function(fieldId) {
                 const field = document.getElementById(fieldId);
                 if (!field.value || field.value.trim() === '') {
                     isValid = false;
                     field.classList.add('is-invalid');
                 } else {
                     field.classList.remove('is-invalid');
-                    // Additional validation for email and phone number format
-                    if (field.id === 'email' && !field.value.match(/^[A-Za-z0-9+_.-]+@(.+)$/)) {
-                        isValid = false;
-                        field.classList.add('is-invalid');
-                        field.nextElementSibling.textContent = 'Please enter a valid email address.';
-                    } else if (field.id === 'phoneNumber' && !field.value.match(/^[0-9]{10}$/)) {
-                        isValid = false;
-                        field.classList.add('is-invalid');
-                        field.nextElementSibling.textContent = 'Please enter a valid 10-digit phone number.';
-                    }
                 }
             });
-
-            // Validate file inputs
-            const fileInputs = ['aadharFront', 'aadharBack', 'photograph']; // Only required ones
-            fileInputs.forEach(function(fieldId) {
-                const input = document.getElementById(fieldId);
-                const feedback = input.nextElementSibling.nextElementSibling; // Get the invalid-feedback div
-
-                if (input.hasAttribute('required') && (!input.files || input.files.length === 0)) {
-                    isValid = false;
-                    input.nextElementSibling.classList.add('is-invalid'); // Add to label for visual cue
-                    if (feedback) feedback.style.display = 'block';
-                } else {
-                    input.nextElementSibling.classList.remove('is-invalid');
-                    if (feedback) feedback.style.display = 'none';
-                }
-            });
-
+            
             if (!isValid) {
-                e.preventDefault(); // Prevent form submission
-                // Alert can be annoying, using Bootstrap's invalid-feedback is better.
-                // alert('Please correct the highlighted fields and upload all required documents.');
+                e.preventDefault();
+                alert('Please fill all required fields and upload required documents.');
             }
         });
     </script>

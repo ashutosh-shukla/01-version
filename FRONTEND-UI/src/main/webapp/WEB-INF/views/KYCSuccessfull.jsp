@@ -9,14 +9,15 @@
 <body>
 <div class="container mt-5">
     <div class="alert alert-success text-center fs-5">
-        ✅ Your KYC documents were uploaded successfully.<br>
-        Please wait for admin approval before account creation.
+        Done! Your KYC documents were uploaded successfully.<br>
+        Please wait for Admin approval for your account creation.
     </div>
 
    <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-success">Back to Dashboard</button>
-                            <a href="${pageContext.request.contextPath}/customer/dashboard/${customerId}" 
-                               class="btn btn-secondary">Back to Dashboard</a>
+                            <button type="submit" class="btn btn-success">
+                            <a href="${pageContext.request.contextPath}/customer/dashboard/${customerId}">Back to Customer Dashboard</a>
+                            </button>
+                            
                         </div>
 </div>
 

@@ -1,8 +1,0 @@
-server.port=7071
-spring.application.name=FRONTEND-UI
-
-
-spring.mvc.view.prefix=/WEB-INF/jsp/
-spring.mvc.view.suffix=.jsp
-spring.servlet.multipart.max-file-size=10MB
-spring.servlet.multipart.max-request-size=15MB

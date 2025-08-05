@@ -158,9 +158,37 @@
                             <c:forEach var="document" items="${documents}">
                                 <tr>
                                     <td>${document.id}</td>
-                                    <td>${document.fullName}</td>
-                                    <td>${document.email}</td>
-                                    <td>${document.phoneNumber}</td>
+                                    <c:set var="customer" value="${customerMap[document.customerId]}" />
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${not empty customer}">
+                                                ${customer.firstName} ${customer.lastName}
+                                            </c:when>
+                                            <c:otherwise>
+                                                N/A
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${not empty customer}">
+                                                ${customer.email}
+                                            </c:when>
+                                            <c:otherwise>
+                                                N/A
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${not empty customer}">
+                                                ${customer.phoneNumber}
+                                            </c:when>
+                                            <c:otherwise>
+                                                N/A
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
                                     <td>
                                         <c:choose>
                                             <c:when test="${document.status == 'PENDING'}">
@@ -198,7 +226,7 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li>
-                                                    <form action="/kyc/admin/update-status/${document.id}" method="post" style="display: inline;">
+                                                    <form action="/kyc/admin/update-status?customerId=${customer.customerId}&documentId=${document.id}" method="post" style="display: inline;">
                                                         <input type="hidden" name="status" value="APPROVED">
                                                         <button type="submit" class="dropdown-item text-success">
                                                             <i class="fas fa-check me-2"></i>Approve
@@ -206,7 +234,7 @@
                                                     </form>
                                                 </li>
                                                 <li>
-                                                    <form action="/kyc/admin/update-status/${document.id}" method="post" style="display: inline;">
+                                                    <form action="/kyc/admin/update-status?customerId=${customer.customerId}&documentId=${document.id}" method="post" style="display: inline;">
                                                         <input type="hidden" name="status" value="REJECTED">
                                                         <button type="submit" class="dropdown-item text-danger">
                                                             <i class="fas fa-times me-2"></i>Reject
@@ -214,7 +242,7 @@
                                                     </form>
                                                 </li>
                                                 <li>
-                                                    <form action="/kyc/admin/update-status/${document.id}" method="post" style="display: inline;">
+                                                    <form action="/kyc/admin/update-status?customerId=${customer.customerId}&documentId=${document.id}" method="post" style="display: inline;">
                                                         <input type="hidden" name="status" value="PENDING">
                                                         <button type="submit" class="dropdown-item text-warning">
                                                             <i class="fas fa-clock me-2"></i>Pending

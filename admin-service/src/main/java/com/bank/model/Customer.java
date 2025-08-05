@@ -1,118 +1,139 @@
 package com.bank.model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Customer {
 
-    private String customerId;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phoneNumber;
-    private String address;
-    private String dateOfBirth;
-    private String status;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private String password;
+	private String customerId;
 
-    // Default constructor
-    public Customer() {}
+	private String firstName;
 
-    // Getters and Setters
-    public String getCustomerId() {
-        return customerId;
-    }
+	private String lastName;
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
+	private String email;
 
-    public String getFirstName() {
-        return firstName;
-    }
+	private String phoneNumber;
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+	private String address;
 
-    public String getLastName() {
-        return lastName;
-    }
+	private String dateOfBirth;
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	private String status;
 
-    public String getEmail() {
-        return email;
-    }
+	private Date createdAt;
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	private Date updatedAt;
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+	private String password;
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+	protected void onCreate() {
+		createdAt = new Date();
+		updatedAt = new Date();
+	}
 
-    public String getAddress() {
-        return address;
-    }
+	protected void onUpdate() {
+		updatedAt = new Date();
+	}
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+	// Default constructor
+	public Customer() {
+	}
 
-    public String getDateOfBirth() {
-        return dateOfBirth;
-    }
+	public void updateDetails(String firstName, String lastName, String address, String phoneNumber, String status) {
+		this.setFirstName(firstName);
+		this.setLastName(lastName);
+		this.setAddress(address);
+		this.setPhoneNumber(phoneNumber);
+		this.setStatus(status);
+	}
 
-    public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
+	// Getters and Setters
+	public String getCustomerId() {
+		return customerId;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
 
-    // Optional method to update details
-    public void updateDetails(String firstName, String lastName, String address, String phoneNumber) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
-    }
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(String dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setpassword(String password) {
+		this.password = password;
+	}
+
 }

@@ -10,20 +10,20 @@ import com.bank.model.KYCDocument;
 
 public interface KYCDocumentService {
 
-    List<KYCDocument> getAllDocuments();
+	public List<KYCDocument> getAllDocuments();
 
-    Optional<KYCDocument> getDocumentById(Long id);
+	public Optional<KYCDocument> getDocumentById(Long id);
 
-    List<KYCDocument> getDocumentsByStatus(String status);
+	public List<KYCDocument> getDocumentsByStatus(String status);
 
-    KYCDocument saveDocument(KYCDocument document);
+	public KYCDocument saveDocument(KYCDocument document);
 
-    KYCDocument saveKYCDocument(String fullName, String email, String phoneNumber,
-                                 MultipartFile aadharFront, MultipartFile aadharBack,
-                                 MultipartFile panFront, MultipartFile panBack,
-                                 MultipartFile photograph) throws IOException;
+	public KYCDocument saveKycDocument(String customerId, String aadharNumber, String panNumber,
+			MultipartFile aadharFront, MultipartFile aadharBack, MultipartFile panFront, MultipartFile panBack,
+			MultipartFile photograph) throws IOException;
 
-    void updateDocumentStatus(Long id, String status);
+	public void updateDocumentStatus(Long id, String status);
 
-    void deleteDocument(Long id);
+	public void deleteDocument(Long id);
+
 }

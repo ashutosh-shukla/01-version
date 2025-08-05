@@ -4,114 +4,143 @@ import java.util.Date;
 
 public class KYCDocument {
 
-    private Long id;
-    private String fullName;
-    private String email;
-    private String phoneNumber;
-    private String aadharFront;
-    private String aadharBack;
-    private String panFront;
-    private String panBack;
-    private String photograph;
-    private String status;
-    private Date createdAt;
-    private Date updatedAt;
+	private Long id;
 
-    public KYCDocument() {}
+	private String customerId;
 
-    public Long getId() {
-        return id;
-    }
+	private String aadharNumber;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	private String panNumber;
 
-    public String getFullName() {
-        return fullName;
-    }
+	private String aadharFront;
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
+	private String aadharBack;
 
-    public String getEmail() {
-        return email;
-    }
+	private String panFront;
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	private String panBack;
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
+	private String photograph;
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+	private String status = "PENDING";
 
-    public String getAadharFront() {
-        return aadharFront;
-    }
+	private Date createdAt;
 
-    public void setAadharFront(String aadharFront) {
-        this.aadharFront = aadharFront;
-    }
+	private Date updatedAt;
 
-    public String getAadharBack() {
-        return aadharBack;
-    }
+	protected void onCreate() {
+		createdAt = new Date();
+		updatedAt = new Date();
+	}
 
-    public void setAadharBack(String aadharBack) {
-        this.aadharBack = aadharBack;
-    }
+	protected void onUpdate() {
+		updatedAt = new Date();
+	}
 
-    public String getPanFront() {
-        return panFront;
-    }
+	// Constructors
+	public KYCDocument() {
+	}
 
-    public void setPanFront(String panFront) {
-        this.panFront = panFront;
-    }
+	public KYCDocument(String customerId, String aadharNumber, String panNumber) {
+		super();
+		this.customerId = customerId;
+		this.aadharNumber = aadharNumber;
+		this.panNumber = panNumber;
+	}
 
-    public String getPanBack() {
-        return panBack;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setPanBack(String panBack) {
-        this.panBack = panBack;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getPhotograph() {
-        return photograph;
-    }
+	public String getCustomerId() {
+		return customerId;
+	}
 
-    public void setPhotograph(String photograph) {
-        this.photograph = photograph;
-    }
+	public void setCustomerId(String customerId) {
+		this.customerId = customerId;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public String getAadharNumber() {
+		return aadharNumber;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setAadharNumber(String aadharNumber) {
+		this.aadharNumber = aadharNumber;
+	}
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
+	public String getPanNumber() {
+		return panNumber;
+	}
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
+	public void setPanNumber(String panNumber) {
+		this.panNumber = panNumber;
+	}
 
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
+	public String getAadharFront() {
+		return aadharFront;
+	}
 
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+	public void setAadharFront(String aadharFront) {
+		this.aadharFront = aadharFront;
+	}
+
+	public String getAadharBack() {
+		return aadharBack;
+	}
+
+	public void setAadharBack(String aadharBack) {
+		this.aadharBack = aadharBack;
+	}
+
+	public String getPanFront() {
+		return panFront;
+	}
+
+	public void setPanFront(String panFront) {
+		this.panFront = panFront;
+	}
+
+	public String getPanBack() {
+		return panBack;
+	}
+
+	public void setPanBack(String panBack) {
+		this.panBack = panBack;
+	}
+
+	public String getPhotograph() {
+		return photograph;
+	}
+
+	public void setPhotograph(String photograph) {
+		this.photograph = photograph;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Date getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
 }

@@ -10,6 +10,7 @@ import com.bank.model.Account;
 
 
 public interface AccountService {
+	Account createAccount(Account account);
       Account getAccountByCustomerId(String customerId);
     void deposit(String customerId, BigDecimal amount);
     void withdraw(String customerId, BigDecimal amount);
