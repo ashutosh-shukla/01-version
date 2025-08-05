@@ -89,4 +89,13 @@ public class CustomerServiceImpl implements CustomerService {
 		customer.setUpdatedAt(new Date());
 		customerDao.update(customer);
 	}
+
+	@Override
+	public Customer getCustomerByEmail(String email) {
+		Customer customer = customerDao.findByEmail(email);
+		if (customer == null) {
+			throw new CustomerNotFoundException("Customer not found with email: " + email);
+		}
+		return customer;
+	}
 }

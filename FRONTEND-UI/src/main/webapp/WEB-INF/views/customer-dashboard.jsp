@@ -176,9 +176,11 @@
                             </a>
                         </div>
                         <div class="col-md-4">
-                            <a href="/logout" class="btn btn-outline-danger w-100">
-                                <i class="fas fa-sign-out-alt"></i> Logout
-                            </a>
+                            <form action="/auth/logout" method="post" style="display: inline;">
+                                <button type="submit" class="btn btn-outline-danger w-100">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

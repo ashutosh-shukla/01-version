@@ -56,4 +56,13 @@ public class CustomerDaoImpl implements CustomerDao {
 		return entityManager.createQuery(query, Customer.class).getResultList();
 	}
 
+	@Override
+	public Customer findByEmail(String email) {
+		String query = "SELECT c FROM Customer c WHERE c.email = :email";
+		List<Customer> customers = entityManager.createQuery(query, Customer.class)
+				.setParameter("email", email)
+				.getResultList();
+		return customers.isEmpty() ? null : customers.get(0);
+	}
+
 }

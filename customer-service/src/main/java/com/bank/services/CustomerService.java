@@ -15,5 +15,6 @@ public interface CustomerService {
 
     void changePassword(String customerId, String currentPassword, String newPassword);
     void changeEmail(String customerId, String newEmail);
+    Customer getCustomerByEmail(String email);
 
 }

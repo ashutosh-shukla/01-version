@@ -44,6 +44,83 @@ public class CustomerController {
         }
     }
 
+    @PostMapping("/customer/register")
+    public ResponseEntity<Object> registerCustomerForAuth(@RequestBody com.bank.auth.dto.RegisterRequest request) {
+        try {
+            Customer customer = new Customer();
+            customer.setFirstName(request.getFirstName());
+            customer.setLastName(request.getLastName());
+            customer.setEmail(request.getEmail());
+            customer.setPhoneNumber(request.getPhoneNumber());
+            customer.setAddress(request.getAddress());
+            customer.setDateOfBirth(request.getDateOfBirth());
+            customer.setPassword(request.getPassword());
+            customer.setStatus("PENDING");
+            
+            Customer savedCustomer = customerService.createCustomer(customer);
+            
+            java.util.Map<String, Object> response = new java.util.HashMap<>();
+            response.put("customerId", savedCustomer.getCustomerId());
+            response.put("message", "Customer registered successfully");
+            response.put("success", true);
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            java.util.Map<String, Object> response = new java.util.HashMap<>();
+            response.put("message", "Registration failed: " + e.getMessage());
+            response.put("success", false);
+            return ResponseEntity.badRequest().body(response);
+        }
+    }
+
+    @GetMapping("/customer/email/{email}")
+    public ResponseEntity<Object> getCustomerByEmail(@PathVariable String email) {
+        try {
+            Customer customer = customerService.getCustomerByEmail(email);
+            if (customer != null) {
+                java.util.Map<String, Object> response = new java.util.HashMap<>();
+                response.put("customerId", customer.getCustomerId());
+                response.put("firstName", customer.getFirstName());
+                response.put("lastName", customer.getLastName());
+                response.put("email", customer.getEmail());
+                response.put("phoneNumber", customer.getPhoneNumber());
+                response.put("address", customer.getAddress());
+                response.put("dateOfBirth", customer.getDateOfBirth());
+                response.put("status", customer.getStatus());
+                response.put("password", customer.getPassword());
+                return ResponseEntity.ok(response);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<Object> getCustomerById(@PathVariable String customerId) {
+        try {
+            Customer customer = customerService.getCustomer(customerId);
+            if (customer != null) {
+                java.util.Map<String, Object> response = new java.util.HashMap<>();
+                response.put("customerId", customer.getCustomerId());
+                response.put("firstName", customer.getFirstName());
+                response.put("lastName", customer.getLastName());
+                response.put("email", customer.getEmail());
+                response.put("phoneNumber", customer.getPhoneNumber());
+                response.put("address", customer.getAddress());
+                response.put("dateOfBirth", customer.getDateOfBirth());
+                response.put("status", customer.getStatus());
+                response.put("password", customer.getPassword());
+                return ResponseEntity.ok(response);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @GetMapping("/{customerId}")
     public Customer getCustomer(@PathVariable String customerId) {
         return customerService.getCustomer(customerId);

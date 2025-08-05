@@ -15,6 +15,7 @@ public interface CustomerDao {
       Customer update(Customer customer);
       Customer findById(String customerId);
       void updatePassword(String customerId, String newPassword);
+      Customer findByEmail(String email);
       
 
 }

@@ -11,6 +11,11 @@ public class GatewayConfig {
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
+                // Auth Service Routes
+                .route("auth-service", r -> r
+                        .path("/auth/**")
+                        .uri("lb://auth-service"))
+                
                 // KYC Service Routes
                 .route("kyc-service", r -> r
                         .path("/kyc/api/**")
@@ -32,6 +37,11 @@ public class GatewayConfig {
                         .uri("lb://admin-service"))
                 
                 // Health check routes
+                .route("auth-health", r -> r
+                        .path("/health/auth")
+                        .filters(f -> f.rewritePath("/health/auth", "/auth/health"))
+                        .uri("lb://auth-service"))
+                
                 .route("kyc-health", r -> r
                         .path("/health/kyc")
                         .filters(f -> f.rewritePath("/health/kyc", "/kyc/api/health"))
